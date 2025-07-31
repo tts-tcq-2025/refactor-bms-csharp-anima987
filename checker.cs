@@ -3,44 +3,31 @@ using System.Diagnostics;
 
 class Checker
 {
-    public static bool VitalsOk(float temperature, int pulseRate, int spo2)
+    sattic bool isvitalbelowrange(float parameter,float min,string parametername,)
     {
-        if(temperature >102 || temperature < 95)
+        bool retval=!(parameter<min);
+        if(!retval)
         {
-            Console.WriteLine("Temperature critical!");
-            for (int i = 0; i < 6; i++)
-            {
-                Console.Write("\r* ");
-                System.Threading.Thread.Sleep(1000);
-                Console.Write("\r *");
-                System.Threading.Thread.Sleep(1000);
-            }
-            return false;
+            
         }
-        else if (pulseRate < 60 || pulseRate > 100)
+        return retval;
+    }
+    static bool isvitalboverange(float parameter,float max,string parametername,)
+    {
+        bool retval=!(parameter>max);
+        if(!retval)
         {
-            Console.WriteLine("Pulse Rate is out of range!");
-            for (int i = 0; i < 6; i++)
-            {
-                Console.Write("\r* ");
-                System.Threading.Thread.Sleep(1000);
-                Console.Write("\r *");
-                System.Threading.Thread.Sleep(1000);
-            }
-            return false;
+            
         }
-        else if (spo2 < 90)
-        {
-            Console.WriteLine("Oxygen Saturation out of range!");
-            for (int i = 0; i < 6; i++)
-            {
-                Console.Write("\r* ");
-                System.Threading.Thread.Sleep(1000);
-                Console.Write("\r *");
-                System.Threading.Thread.Sleep(1000);
-            }
-            return false;
-        }
+        return retval;
+    }
+    public static bool VitalsOk(float temperature, int pulseRate, int spo2, void(*console))
+    {
+        bool tempok=isvitalbelowrange(temperature,95,"Temperature") && isvitalboverange(temperature,102,"Temperature");
+        bool pulserateok=isvitalbelowrange(pulseRate,60,"PulseRate") && isvitalboverange(pulseRate,100,"PulseRate");
+        bool spo2ok=isvitalbelowrange(spo2,95,"spo2");
+        bool vitlas=tempok && pulserateok && spo2ok;
+        
         Console.WriteLine("Vitals received within normal range");
         Console.WriteLine("Temperature: {0} Pulse: {1}, SO2: {2}", temperature, pulseRate, spo2);
         return true;
